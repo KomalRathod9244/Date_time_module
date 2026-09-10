@@ -10,14 +10,17 @@ import calendar
 y = int(input("Enter the year : "))
 m = int(input("Enter the month : "))
 d = int(input("Enter the day : "))
-date_ = datetime.date(y,m,d)
-print("User entered date : ",date_)
 
+date_ = date(y, m, d)
 
-weekday_n = datetime.datetime.weekday(date_)
+print("User entered date : ", date_)
+
+weekday_n = date_.weekday()
+
 
 def day_name(weekday_n):
     weekday_ = ''
+
     if weekday_n == 0:
         weekday_ = 'Monday'
     elif weekday_n == 1:
@@ -32,33 +35,35 @@ def day_name(weekday_n):
         weekday_ = 'Saturday'
     elif weekday_n == 6:
         weekday_ = 'Sunday'
-        
+
     return weekday_
 
-# 2.  Take a year from the user and determine if it's a leap year. If it is a leap year, find out which day the twenty-ninth of February falls on.
-y = int(input("Enter year : "))
-leap = False
-if y % 4 == 0:
-    if y % 100 == 0:
-        y //= 100
 
-        if y % 4 == 0:
-            leap = True
-        else:
-            leap = False
-    else:
-        leap = True
+print("Day : ", day_name(weekday_n))
+
+
+# 2.  Take a year from the user and determine if it's a leap year. If it is a leap year, find out which day the twenty-ninth of February falls on.
+
+y = int(input("Enter year : "))
+
+if (y % 400 == 0) or (y % 4 == 0 and y % 100 != 0):
+    leap = True
+else:
+    leap = False
 
 if leap:
     print(f"{y} is a leap year")
 else:
-    print(f"{y} is not a leap year ")
+    print(f"{y} is not a leap year")
 
 if leap:
-    leap_year_date = datetime.date(y, 2, 29)
-    print("Date at 29th of Feb : ",leap_year_date)
-    date_feb_twenty_nine = datetime.datetime.weekday(leap_year_date)
-    print(day_name(date_feb_twenty_nine))
+    leap_year_date = date(y, 2, 29)
+
+    print("Date at 29th of Feb : ", leap_year_date)
+
+    date_feb_twenty_nine = leap_year_date.weekday()
+
+    print("Day : ", day_name(date_feb_twenty_nine))
 
 
 # 3.  Take a date of birth (DOB) from the user and calculate and print their age in year, month, and day format.
@@ -70,6 +75,7 @@ dob_input = input("Enter DOB (DD-MM-YYYY): ")
 
 try:
     day, month, year = map(int, dob_input.split("-"))
+
     dob = date(year, month, day)
     today = date.today()
 
@@ -90,16 +96,24 @@ try:
             previous_month = 12
             previous_year -= 1
 
-        age_days += calendar.monthrange(previous_year, previous_month)[1]
+        age_days += calendar.monthrange(
+            previous_year,
+            previous_month
+        )[1]
 
     if age_months < 0:
         age_years -= 1
         age_months += 12
 
-    print(f"Age: {age_years} years, {age_months} months, {age_days} days")
+    print(
+        f"Age: {age_years} years, "
+        f"{age_months} months, "
+        f"{age_days} days"
+    )
 
 except ValueError as e:
     print(f"Invalid input: {e}")
+
 
 # 4.  Print a message based on the current time:
 
@@ -109,9 +123,10 @@ except ValueError as e:
 #   If the current time is between 7 PM and 4 AM, the message should be "Good night."
 
 
-
 current_time = datetime.now()
-print(f"{current_time} = datetime.now() ")
+
+print(f"{current_time} = datetime.now()")
+
 hour = current_time.hour
 
 if 4 <= hour < 12:
@@ -127,16 +142,13 @@ else:
     print("Good night.")
 
 
-
 # 5.  Take a year from the user and determine how many times Monday, Tuesday, Wednesday, and Thursday occur separately in that year. Also, determine the occurrences of weeks, weekdays, and weekends in that year.
 
 
 year = int(input("Enter year: "))
 
 start_date = date(year, 1, 1)
-# print(f"{start_date} = date(year, 1, 1)")
 end_date = date(year + 1, 1, 1)
-# print(f"{end_date} = date(year + 1, 1, 1)")
 
 monday = 0
 tuesday = 0
@@ -156,25 +168,30 @@ while current_date < end_date:
 
     if day == 0:
         monday += 1
+
     elif day == 1:
         tuesday += 1
+
     elif day == 2:
         wednesday += 1
+
     elif day == 3:
         thursday += 1
 
     # Weekdays = Monday to Friday
     if day < 5:
         weekdays += 1
+
     else:
         weekends += 1
 
     total_days += 1
+
     current_date += timedelta(days=1)
-# print(f"{current_date} = timedelta(days=1)")
-# print(f"{current_date+timedelta(days=1)} = timedelta(days=1)")
+
 
 print("\n===== Year Statistics =====")
+
 print(f"Monday    : {monday}")
 print(f"Tuesday   : {tuesday}")
 print(f"Wednesday : {wednesday}")
@@ -186,26 +203,26 @@ print(f"Weekends   : {weekends}")
 print(f"Weeks      : {total_days / 7:.2f}")
 
 
-
 # 6.  Take a string from the user in the format "August,29, 2025, 02:20 PM," and convert it to the format "2025-08-29 14:20:00."
 
 
-user_input = input("Enter date and time in the format 'August,29, 2025, 02:20 PM,': ")
+user_input = input(
+    "Enter date and time in the format "
+    "'August,29, 2025, 02:20 PM,': "
+)
 
 try:
     date_time = datetime.strptime(
         user_input.strip(),
         "%B,%d, %Y, %I:%M %p,"
     )
-    # print(f'{date_time} = datetime.strptime(user_input.strip(), "%B,%d, %Y, %I:%M %p,")')
 
     result = date_time.strftime("%Y-%m-%d %H:%M:%S")
-    # print(f'{result} = date_time.strftime("%Y-%m-%d %H:%M:%S")')
+
     print("Converted date and time:", result)
 
 except ValueError:
     print("Invalid date/time format.")
-
 
 
 # 7  Take the number of days from the user and print the date that comes after those many days from the current date, and the date that comes before those many days from the current date. If either of those dates falls on a Saturday or Sunday, print the message "Hurry!"; otherwise, print the message "Oh."
@@ -213,11 +230,11 @@ except ValueError:
 
 days = int(input("Enter number of days: "))
 
-today = date.today ()
+today = date.today()
 
 after_date = today + timedelta(days=days)
 before_date = today - timedelta(days=days)
-# print("timedelta(days=days) = ",timedelta(days=days))
+
 print("Current Date :", today)
 print("After", days, "days :", after_date)
 print("Before", days, "days:", before_date)
@@ -227,5 +244,3 @@ if after_date.weekday() >= 5 or before_date.weekday() >= 5:
     print("Hurry!")
 else:
     print("Oh.")
-'''
-'''
